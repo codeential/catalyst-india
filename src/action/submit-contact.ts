@@ -32,7 +32,7 @@ const text = (formData: FormData, key: string) => {
 };
 
 /**
- * STUB. Succeeds only in development so a visitor never sees a false "sent".
+ * Succeeds only in development so a visitor never sees a false "sent".
  * later: send the staff notification + confirmation email once the provider
  * and receiving mailbox are decided (authenticated, SPF/DKIM/DMARC).
  * Never log or forward form values to analytics or URLs.
