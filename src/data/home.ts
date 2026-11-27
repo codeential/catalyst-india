@@ -19,7 +19,7 @@ hero: {
   ],
 
   primaryCta: "Explore Our Work",
-  primaryHref: "/our-work",
+  primaryHref: "/work",
 
   secondaryCta: "Donate",
   secondaryHref: "/donate",
@@ -172,7 +172,7 @@ impact: {
   story: {
     title: 'Pooja’s Journey',
     description: 'From a vulnerable beginning to a life of confidence and opportunity.',
-    href: '/stories/poojas-journey',
+    href: '/impact',
     linkLabel: 'Read the full story',
   },
 },
