@@ -1,51 +1,328 @@
+
 @import "tailwindcss";
 
-/* @theme {
-  --color-forest: #1f4d3a;
-  --color-forest-dark: #163a2b;
-  --color-flame: #c2410c;
-  --color-flame-dark: #9a3412;
-  --color-gold: #f8c808;
-  --color-ink: #1a1714;
-  --color-offwhite: #faf6ef;
-  --color-stone: #e8e1d6;
-} */
+/* =========================================================
+   CATALYST INDIA
+   Global Design System
+   ========================================================= */
+
+:root {
+  /* Brand Colors */
+  --color-deep-teal: #194d46;
+  --color-warm-sand: #e8d9bf;
+  --color-off-white: #f8f7f3;
+  --color-charcoal: #222b2a;
+
+  /* Supporting Colors */
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Semantic Colors */
+  --background: var(--color-off-white);
+  --foreground: var(--color-charcoal);
+
+  --primary: var(--color-deep-teal);
+  --primary-foreground: var(--color-white);
+
+  --secondary: var(--color-warm-sand);
+  --secondary-foreground: var(--color-charcoal);
+
+  /* Borders */
+  --border: rgba(34, 43, 42, 0.12);
+  --border-strong: rgba(34, 43, 42, 0.2);
+
+  /* Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-full: 9999px;
+
+  /* Layout */
+  --container-width: 1280px;
+  --container-padding: 1.25rem;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 400ms ease;
+}
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =========================================================
+   SELECTION
+   ========================================================= */
+
+::selection {
+  background: var(--color-deep-teal);
+  color: var(--color-white);
+}
+
+/* =========================================================
+   FOCUS
+   Accessible keyboard focus
+   ========================================================= */
+
+:focus-visible {
+  outline: 2px solid var(--color-deep-teal);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   IMAGES
+   ========================================================= */
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+/* =========================================================
+   BUTTONS & FORM ELEMENTS
+   ========================================================= */
+
+button,
+input,
+textarea,
+select {
+  font-size: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-deep-teal) var(--color-off-white);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-off-white);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-deep-teal);
+  border-radius: var(--radius-full);
+}
+
+/* =========================================================
+   COMMON LAYOUT
+   ========================================================= */
+
+.site-container {
+  width: min(
+    100% - (var(--container-padding) * 2),
+    var(--container-width)
+  );
+  margin-inline: auto;
+}
+
+.section {
+  width: 100%;
+  padding-block: 5rem;
+}
+
+.section-light {
+  background: var(--color-off-white);
+}
+
+.section-sand {
+  background: var(--color-warm-sand);
+}
+
+.section-teal {
+  background: var(--color-deep-teal);
+  color: var(--color-white);
+}
+
+.section-dark {
+  background: var(--color-charcoal);
+  color: var(--color-white);
+}
+
+/* =========================================================
+   COMMON TEXT COLORS
+   ========================================================= */
+
+.text-teal {
+  color: var(--color-deep-teal);
+}
+
+.text-sand {
+  color: var(--color-warm-sand);
+}
+
+.text-charcoal {
+  color: var(--color-charcoal);
+}
+
+.text-white {
+  color: var(--color-white);
+}
+
+/* =========================================================
+   COMMON BACKGROUNDS
+   ========================================================= */
+
+.bg-teal {
+  background: var(--color-deep-teal);
+}
+
+.bg-sand {
+  background: var(--color-warm-sand);
+}
+
+.bg-off-white {
+  background: var(--color-off-white);
+}
+
+.bg-charcoal {
+  background: var(--color-charcoal);
+}
+
+/* =========================================================
+   TRANSITIONS
+   ========================================================= */
+
+.transition-default {
+  transition:
+    color var(--transition-normal),
+    background-color var(--transition-normal),
+    border-color var(--transition-normal),
+    opacity var(--transition-normal),
+    transform var(--transition-normal);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (min-width: 640px) {
+  :root {
+    --container-padding: 1.5rem;
+  }
+
+  .section {
+    padding-block: 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --container-padding: 2rem;
+  }
+
+  .section {
+    padding-block: 7rem;
+  }
+}
+
 @theme {
-  --color-forest: #262626;
-  --color-forest-dark: #151515;
-  --color-flame: #F0522E;
-  --color-flame-dark: #D63B1B;
-  --color-gold: #F5A623;
-  --color-ink: #242424;
-  --color-offwhite: #FAFAF7;
-  --color-stone: #E7E4DD;
-}
-@theme inline {
-  --font-sans: var(--font-inter), system-ui, sans-serif;
-  --font-serif: var(--font-fraunces), Georgia, serif;
+  --animate-draw: draw 1.8s ease-out var(--delay, 0s) both;
+  --animate-grow-y: grow-y 0.9s ease-out var(--delay, 0s) both;
+  --animate-pop: pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) var(--delay, 0s) both;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-sway: sway 5s ease-in-out infinite;
+  --animate-fly: fly 16s linear var(--delay, 0s) infinite;
+  --animate-spin-slow: spin 40s linear infinite;
+
+  @keyframes draw {
+    from { stroke-dashoffset: 1; }
+    to   { stroke-dashoffset: 0; }
+  }
+  @keyframes grow-y {
+    from { transform: scaleY(0); }
+    to   { transform: scaleY(1); }
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.6); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
+  @keyframes sway {
+    0%, 100% { transform: rotate(-1.5deg); }
+    50%      { transform: rotate(1.5deg); }
+  }
+  @keyframes fly {
+    0%   { transform: translateX(-30px) translateY(6px); opacity: 0; }
+    10%  { opacity: 1; }
+    50%  { transform: translateX(60px) translateY(-8px); }
+    90%  { opacity: 1; }
+    100% { transform: translateX(150px) translateY(4px); opacity: 0; }
+  }
 }
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-  body {
-    @apply bg-offwhite font-sans text-ink antialiased;
-  }
-  h1,
-  h2,
-  h3,
-  h4 {
-    @apply font-serif;
-  }
-  :focus-visible {
-    outline: 2px solid var(--color-flame-dark);
-    outline-offset: 3px;
-  }
+
+
+/*--for the moving logos in the home page--*/
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+.animate-marquee {
+  animation: marquee 40s linear infinite;
 }
+

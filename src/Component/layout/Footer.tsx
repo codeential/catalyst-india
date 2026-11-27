@@ -1,232 +1,225 @@
-"use client";
-
-import { useSyncExternalStore } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import type { IconType } from "react-icons";
 import {
-  contactInfo,
-  copyrightOwner,
-  footerLinks,
-  getSupportHref,
-} from "@/data/site";
-import Button from "@/Component/ui/Button";
+  FaBuilding,
+  FaEnvelope,
+  FaFacebookF,
+  FaInstagram,
+  FaLinkedinIn,
+  FaMapMarkerAlt,
+  FaPhoneAlt,
+  FaYoutube,
+} from "react-icons/fa";
+import {
+  brandDescription,
+  contactItems,
+  donateLink,
+  getInvolvedLinks,
+  homeLink,
+  policyLinks,
+  quickLinks,
+  socialLinks,
+  type FooterLink,
+} from "@/navigation/footerNavigation";
 
-const noopSubscribe = () => () => {};
+const socialIcons: Record<string, IconType> = {
+  LinkedIn: FaLinkedinIn,
+  Instagram: FaInstagram,
+  YouTube: FaYoutube,
+  Facebook: FaFacebookF,
+};
 
-export default function Footer() {
-  const reduce = useReducedMotion();
-  const support = getSupportHref();
+const contactIcons: Record<string, IconType> = {
+  "Registered Office": FaBuilding,
+  "Project Address": FaMapMarkerAlt,
+  Telephone: FaPhoneAlt,
+  Email: FaEnvelope,
+};
 
-  // Real year in the browser, a fixed fallback during prerender (avoids the new Date() error)
-  const year = useSyncExternalStore(
-    noopSubscribe,
-    () => new Date().getFullYear(),
-    () => 2026,
-  );
+const headingClass =
+  "whitespace-nowrap text-xl font-semibold leading-tight text-sand sm:text-2xl";
 
-  const container: Variants = {
-    hidden: {},
-    show: { transition: { staggerChildren: reduce ? 0 : 0.12 } },
-  };
+const linkClass =
+  "block w-fit py-1 text-[15px] text-[var(--color-off-white)] opacity-80 transition-default hover:text-sand hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-warm-sand)]";
 
-  const item: Variants = {
-    hidden: reduce ? { opacity: 0 } : { opacity: 0, y: 32 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: reduce ? 0.2 : 0.7, ease: [0.22, 1, 0.36, 1] },
-    },
-  };
+const pendingLinkClass =
+  "block w-fit py-1 text-[15px] text-[var(--color-off-white)] opacity-60";
 
-  const backToTop = () =>
-    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+const contactLinkClass =
+  "mt-0.5 inline-block text-[15px] text-[var(--color-off-white)] opacity-80 transition-default hover:text-sand hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-warm-sand)]";
 
-  const linkClass =
-    "group relative inline-flex min-h-11 items-center text-base text-offwhite/80 transition-colors duration-300 hover:text-gold xl:text-lg";
+const policyLinkClass =
+  "whitespace-nowrap text-[13px] text-[var(--color-off-white)] opacity-70 transition-default hover:text-sand hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-warm-sand)] sm:text-sm";
 
-  const headingClass =
-    "mb-4 font-sans text-sm font-semibold uppercase tracking-[0.2em] text-gold";
+const pendingPolicyClass =
+  "whitespace-nowrap text-[13px] text-[var(--color-off-white)] opacity-60 sm:text-sm";
 
-  const mapsUrl = (address: string) =>
-    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+const legalHrefFallbacks: Record<string, string> = {
+  "Privacy Policy": "/privacy-policy",
+  "Terms & Conditions": "/terms-and-conditions",
+  "Donation/Refund Policy": "/donation-refund-policy",
+};
+
+function renderFooterLink(link: FooterLink, policy = false) {
+  if (!link.href) {
+    return (
+      <span className={policy ? pendingPolicyClass : pendingLinkClass}>
+        {link.label}
+      </span>
+    );
+  }
 
   return (
-    <footer className="relative overflow-hidden bg-forest-dark text-offwhite">
-      {/* Animated top divider */}
-      <motion.div
-        aria-hidden
-        initial={{ scaleX: reduce ? 1 : 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute inset-x-0 top-0 h-1 origin-left bg-gradient-to-r from-flame via-gold to-flame"
-      />
+    <Link href={link.href} className={policy ? policyLinkClass : linkClass}>
+      {link.label}
+    </Link>
+  );
+}
 
-      {/* Decorative glows */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -left-32 top-10 size-96 rounded-full bg-flame/15 blur-3xl"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-24 bottom-24 size-96 rounded-full bg-gold/10 blur-3xl"
-      />
-
-      {/* Decorative giant wordmark */}
-            {/* Decorative giant wordmark (centered) */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden"
-      >
-        <motion.p
-          initial={reduce ? false : { opacity: 0, scale: 0.92 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          className="select-none whitespace-nowrap font-serif text-[12.5vw] font-semibold leading-none tracking-tight text-white/[0.04]"
-        >
-          Empowered City
-        </motion.p>
-      </div>
-
-      <div className="relative mx-auto max-w-[1680px] px-5 pb-8 pt-16 lg:px-10 lg:pt-24 2xl:px-16">
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.3fr_0.9fr_1.5fr_1.2fr] lg:gap-14"
-        >
-          {/* 1. Brand */}
-          <motion.div variants={item}>
-                        <Link
-              href="/"
-              aria-label="Catalyst India — home"
-              className="inline-block"
+export default function Footer() {
+  return (
+    <footer className="bg-teal text-[var(--color-off-white)]">
+      <div className="site-container py-12 sm:py-14 lg:py-16">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          <section aria-label="Catalyst India">
+            <Link
+              href={homeLink.href}
+              aria-label={homeLink.label}
+              className="inline-block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-warm-sand)]"
             >
               <Image
-                src="/images/logo.png"
+                src="/images/logowhite.png"
                 alt="Catalyst India"
-                width={400}
-                height={145}
-                className="h-16 w-auto lg:h-20 xl:h-[88px]"
+                width={2113}
+                height={744}
+                sizes="(max-width: 639px) 160px, 180px"
+                className="h-10 w-auto sm:h-12"
               />
             </Link>
-            <p className="mt-6 max-w-xs font-serif text-3xl font-semibold leading-tight xl:text-4xl">
-              We seek an <span className="text-gold">Empowered City!</span>
-            </p>
-          </motion.div>
 
-          {/* 2. Navigation */}
-          <motion.nav variants={item} aria-label="Footer">
-            <h2 className={headingClass}>Explore</h2>
-            <ul>
-              {footerLinks.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className={linkClass}>
-                    <span className="relative">
-                      {link.label}
-                      <span
-                        aria-hidden
-                        className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-gold transition-transform duration-300 group-hover:scale-x-100"
-                      />
-                    </span>
-                  </Link>
-                </li>
+            <p className="mt-5 max-w-sm text-[15px] leading-relaxed opacity-75">
+              {brandDescription}
+            </p>
+
+            <Link
+              href={donateLink.href}
+              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-md bg-sand px-6 text-sm font-semibold text-charcoal transition-default hover:bg-[var(--color-off-white)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-warm-sand)] sm:text-base"
+            >
+              {donateLink.label}
+            </Link>
+
+            <ul className="mt-4 flex items-center gap-3" aria-label="Social media">
+              {socialLinks.map((link) => {
+                const SocialIcon = socialIcons[link.label];
+
+                return (
+                  <li key={link.label}>
+                    <a
+                      href={link.href ?? "#"}
+                      aria-label={link.label}
+                      className="inline-flex size-9 items-center justify-center rounded-full text-[var(--color-off-white)] opacity-80 transition-default hover:bg-sand hover:text-charcoal hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-warm-sand)]"
+                    >
+                      <SocialIcon aria-hidden="true" className="size-5" />
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+
+          <nav aria-label="Quick links">
+            <h2 className={headingClass}>Quick Links</h2>
+
+            <ul className="mt-4 space-y-2">
+              {quickLinks.map((link) => (
+                <li key={link.label}>{renderFooterLink(link)}</li>
               ))}
             </ul>
-          </motion.nav>
+          </nav>
 
-          {/* 3. Contact */}
-          <motion.div variants={item}>
+          <nav aria-label="Get involved">
+            <h2 className={headingClass}>Get Involved</h2>
+
+            <ul className="mt-4 space-y-2">
+              {getInvolvedLinks.map((link) => (
+                <li key={link.label}>{renderFooterLink(link)}</li>
+              ))}
+            </ul>
+          </nav>
+
+          <div>
             <h2 className={headingClass}>Contact</h2>
-            <address className="space-y-5 text-base not-italic text-offwhite/80 xl:text-lg">
-              <div>
-                <p className="mb-1 text-sm font-semibold text-offwhite">
-                  Registered Office
-                </p>
-                <a
-                  href={mapsUrl(contactInfo.registeredOffice)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block min-h-11 transition-colors hover:text-gold"
-                >
-                  {contactInfo.registeredOffice}
-                </a>
-              </div>
-              <div>
-                <p className="mb-1 text-sm font-semibold text-offwhite">
-                  Project Address
-                </p>
-                <a
-                  href={mapsUrl(contactInfo.projectAddress)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block min-h-11 transition-colors hover:text-gold"
-                >
-                  {contactInfo.projectAddress}
-                </a>
-              </div>
-              <div className="flex flex-col">
-                <a
-                  href={contactInfo.phoneHref}
-                  className="inline-flex min-h-11 items-center transition-colors hover:text-gold"
-                >
-                  {contactInfo.phoneDisplay}
-                </a>
-                <a
-                  href={`mailto:${contactInfo.email}`}
-                  className="inline-flex min-h-11 items-center break-all transition-colors hover:text-gold"
-                >
-                  {contactInfo.email}
-                </a>
-              </div>
+
+            <address className="mt-4 space-y-3 text-[15px] not-italic text-[var(--color-off-white)]">
+              {contactItems.map((item) => {
+                const ContactIcon = contactIcons[item.label];
+
+                return (
+                  <div key={item.label}>
+                    <p className="flex items-center gap-2 text-[15px] font-semibold text-sand">
+                      <ContactIcon
+                        aria-hidden="true"
+                        className="size-[18px] shrink-0"
+                      />
+                      {item.label}
+                    </p>
+
+                    {item.href ? (
+                      <a href={item.href} className={contactLinkClass}>
+                        {item.value}
+                      </a>
+                    ) : (
+                      <p className="mt-0.5 text-[15px] leading-relaxed opacity-75">
+                        {item.value}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
             </address>
-          </motion.div>
+          </div>
+        </div>
 
-          {/* 4. Support */}
-          <motion.div variants={item}>
-            <h2 className={headingClass}>Support</h2>
-            <p className="mb-6 max-w-xs text-base text-offwhite/80 xl:text-lg">
-              Help us build bridges and open doors for the most vulnerable in
-              Delhi.
+        <div className="mt-8 border-t border-white/15 pt-4 text-sm text-white/80 md:text-[15px]">
+          <div className="grid grid-cols-1 items-center gap-3 text-center md:grid md:grid-cols-[1fr_auto_1fr] md:text-left">
+            <p className="justify-self-center md:justify-self-start">
+              © 2026 Catalyst India. All rights reserved.
             </p>
-            <Button
-              href={support.href}
-              external={support.external}
-              variant="gold"
-            >
-              Support Our Work
-            </Button>
-          </motion.div>
-        </motion.div>
 
-        {/* Bottom bar */}
-        <motion.div
-          initial={reduce ? false : { opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="relative mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-sm text-offwhite/60 sm:flex-row lg:mt-24"
-        >
-          <p>
-            © {year} {copyrightOwner}
-          </p>
-          <button
-            type="button"
-            onClick={backToTop}
-            className="group inline-flex min-h-11 items-center gap-2 transition-colors hover:text-gold"
-          >
-            Back to top
-            <span
-              aria-hidden
-              className="inline-block transition-transform duration-300 group-hover:-translate-y-1"
+            <nav
+              aria-label="Legal"
+              className="order-first justify-self-center md:order-none"
             >
-              ↑
-            </span>
-          </button>
-        </motion.div>
+              <ul className="flex flex-wrap items-center justify-center">
+                {policyLinks.map((link, index) => (
+                  <li key={link.label} className="flex items-center">
+                    <Link
+                      href={link.href ?? legalHrefFallbacks[link.label]}
+                      className="whitespace-nowrap transition-colors hover:text-white hover:underline"
+                    >
+                      {link.label}
+                    </Link>
+
+                    {index < policyLinks.length - 1 ? (
+                      <span aria-hidden="true" className="mx-3 opacity-50">
+                        |
+                      </span>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <p className="flex items-center justify-center justify-self-center md:justify-end md:justify-self-end md:text-right">
+              <span
+                aria-hidden="true"
+                className="inline-block h-[2px] w-8 bg-[#e0a526]"
+              />
+              <span className="ml-2">by Techverzing Technologies</span>
+            </p>
+          </div>
+        </div>
       </div>
     </footer>
   );
