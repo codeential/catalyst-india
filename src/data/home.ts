@@ -160,7 +160,7 @@ hero: {
 impact: {
   title: 'Our Impact & Stories',
   stats: [
-    { icon: 'users', label: 'People reached', value: '10,000+' },
+    { icon: 'users', label: 'People reached', value: '10+' },
     { icon: 'book', label: 'Legacy projects', value: '6' },
     { icon: 'handshake', label: 'Partner organisations', value: '7' },
   ],
