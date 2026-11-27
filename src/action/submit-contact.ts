@@ -74,7 +74,7 @@ export async function submitContact(
     return { status: "error", message: copy.tooFast, errors: {}, values };
   }
 
-  // later: verify captcha token (e.g. Cloudflare Turnstile) here.
+  // later: verify captcha token (e.g.. Cloudflare Turnstile) here.
   // later: rate limit by IP / key here.
 
   const errors: ContactFormState["errors"] = {};
